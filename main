@@ -1,28 +1,190 @@
 package com.company;
-import javax.swing.*;
 
-import static com.company.ProjConstants.*;
-import java.util.Scanner;
 import java.io.*;
-import java.awt.*;
-import javax.swing.*;
+import java.util.Scanner;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        String UserInput = "";
+        double Mean;
 
-        try{
-            
+        myData TheMean = new myData();
+
+        InputStreamReader r = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(r);
+
+        double someValue;
+        boolean fileDone = false;
+
+        myData theData = new myData();
+
+        System.out.println(" MAX is " + theData.getMax());
+
+        System.out.println("------------------------------------------------");
+
+        try {
+            // --------------------------------
+            // create file, and scanner objects
+            // - file object is called tempfilenums.txt and is in your project directory
+            //   that is the same folder as the iml file
+            //
+            File f = new File("tempfilenums.txt");
+            Scanner s = new Scanner(f);
+
+            // ---------------------------------------------
+            // Reads in values from the file into the array
+            //
+
+            for (int i = 0; i < theData.getMax(); i++) {
+
+                System.out.println("ROW " + i);
+
+                for (int j = 0; j < theData.getMax(); j++) {
+
+                    // ---------------------------------------------
+                    // The scanner checks if there is another integer and prints it
+                    // if there is
+                    //
+
+                    if (s.hasNext()) {
+
+                        //System.out.println("- STILL MORE NUMBERS -");
+
+                        // -------------------------------
+                        // Store the integer in the array inside the class
+                        //
+                        theData.setData(i, j, s.nextInt());
+
+                        // -------------------------------
+                        // Get the integer from the array inside the class
+                        //
+                        someValue = theData.getData(i, j);
+
+                        //System.out.print(" - " + someValue);
+                        System.out.println(" - position " + i + " " + j + " val is " + someValue);
+
+                    } else {
+
+                        System.out.println("- NO MORE NUMBERS -");
+                        theData.setData(i, j, theData.getINVALID());
+
+                        fileDone = true;
+                        s.close();
+                        break;
+                    }
+                } // for column
+
+
+                // ---------------------------------------------
+                // The file has been completely read into the array, so the user is notified.
+                //
+
+                System.out.println();
+                if (fileDone) {
+                    System.out.println("\n\tFile data has read and put into the array");
+                    break;
+                }
+
+            }
+
+            // ---------------------------------------------
+            // If there is not enough space in the array so make sure the user is notified that the file contains
+            // more data than the array can hold.
+            //
+
+            if (!fileDone) {
+                System.out.println("\n\tCAUTION: file has additional data, consider making array larger.");
+            }
+
+            // ---------------------------------------------
+            // If the file cannot be found then an exception (error) is generated (thrown) that we have to
+            // deal with (catch).
+            // - we print "e" the exception, and
+            // - show the user where it was using the "exceptions" stack trace information
+            //
+
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+            e.printStackTrace();
         }
 
-        Scanner reader = new Scanner(System.in);
-        System.out.println("Please enter a number:");
+        while (!UserInput.equalsIgnoreCase("Quit")) {
+            System.out.println("\n\n\nHello! What would you like to calculate you fine human being? Please Type the Number in Each Case");
+            System.out.println("1. Number of Rows and Columns");
+            System.out.println("2. The sum of all numbers in the FILE");
+            System.out.println("3. The Mean");
+            System.out.println("4. The Median");
+            System.out.println("5. The Mode");
+            System.out.println("6. The Variance");
+            System.out.println("7. Standard Deviation");
+            System.out.println("8. INVALID number");
 
+            System.out.println("Type 'Quit' to Leave :(");
 
-        // ---------*---------*---------*---------*---------*
-        // Create a new object from the StDeviation Class
-        //
-        StDeviation calcSDev =  new StDeviation();
+            UserInput = br.readLine();
 
+            switch (UserInput){
 
+                case "1":{
+                    System.out.println("============================================");
+                    System.out.println("\n\tThe number of Columns is: " + theData.getMax());
+                    System.out.println("\tThe number of Rows is: " + theData.getMax());
+                    System.out.println("============================================");
+                }
+                break;
+
+                case "2":{
+                    System.out.println("============================================");
+                    System.out.println("\tThe total is: " + theData.getSum());
+                    System.out.println("============================================");
+                }
+                break;
+
+                case "3":{
+                    System.out.println("============================================");
+                    System.out.println("\tThe mean is: " + theData.getMean());
+                    System.out.println("============================================");
+                }
+                break;
+
+                case "4":{
+                    System.out.println("============================================");
+                    System.out.println("\tThe median is: " + theData.getMedian());
+                    System.out.println("============================================");
+                }
+                break;
+
+                case "5":{
+                    System.out.println("============================================");
+                    System.out.println("\tThe mode is: " + theData.getMode());
+                    System.out.println("============================================");
+                }
+                break;
+
+                case "6":{
+                    System.out.println("============================================");
+                    System.out.println("\tThe variance is: " + theData.getVariance());
+                    System.out.println("============================================");
+                }
+                break;
+
+                case "7":{
+                    System.out.println("============================================");
+                    System.out.println("\tThe INVALID value is: " + theData.getINVALID());
+                    System.out.println("============================================");
+                }
+                break;
+
+                case "8": {
+                    System.out.println("============================================");
+                    System.out.println("\tThe standard deviation is: " + theData.getStandardDeviation());
+                    System.out.println("============================================");
+                }
+                break;
+
+            }
+        }
     }
 }
+
